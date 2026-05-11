@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "JD Order Exporter Local",
+  "version": "0.1.0",
+  "description": "Export your own JD order history from an already signed-in Chrome session.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "JD Order Exporter"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://order.jd.com/*",
+    "https://details.jd.com/*",
+    "https://details.yiyaojd.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://order.jd.com/center/list.action*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
