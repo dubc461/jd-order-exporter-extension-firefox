@@ -1,0 +1,6 @@
+jd-orders-*.csv
+jd-orders-*.jsonl
+*.zip
+*.crx
+.DS_Store
+Thumbs.db
