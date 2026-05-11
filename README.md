@@ -10,12 +10,20 @@
 - 默认脱敏收货人、电话、地址；需要完整本地档案时可以手动取消勾选。
 - 详情页链接中的查询参数只用于当次本地抓取，不写入导出文件。
 
+## 下载
+
+推荐使用 GitHub 自带的源码包下载：
+
+[Download ZIP](https://github.com/bwjoke/jd-order-exporter-extension/archive/refs/heads/main.zip)
+
+也可以在仓库页面点击绿色 `Code` 按钮，再选择 `Download ZIP`。这个 zip 会包含 README、隐私说明、许可证等文档文件；Chrome 会忽略这些额外文件，只要选择解压后包含 `manifest.json` 的目录即可。
+
 ## 安装
 
 1. 打开 Chrome 的 `chrome://extensions/`。
 2. 开启右上角“开发者模式”。
 3. 点击“加载已解压的扩展程序”。
-4. 选择本项目目录。
+4. 选择刚刚解压出来的扩展目录。
 
 ## 使用
 
