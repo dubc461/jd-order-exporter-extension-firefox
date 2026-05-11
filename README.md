@@ -12,11 +12,11 @@
 
 ## 下载
 
-推荐使用 GitHub 自带的源码包下载：
+推荐从 GitHub Releases 下载扩展安装包：
 
-[Download ZIP](https://github.com/bwjoke/jd-order-exporter-extension/archive/refs/heads/main.zip)
+[jd-order-exporter-local-v0.1.0.zip](https://github.com/bwjoke/jd-order-exporter-extension/releases/download/v0.1.0/jd-order-exporter-local-v0.1.0.zip)
 
-也可以在仓库页面点击绿色 `Code` 按钮，再选择 `Download ZIP`。这个 zip 会包含 README、隐私说明、许可证等文档文件；Chrome 会忽略这些额外文件，只要选择解压后包含 `manifest.json` 的目录即可。
+也可以在仓库页面右侧点击 `Releases`，进入最新版本后下载上面的 zip。这个 zip 只包含 Chrome 扩展运行需要的文件，解压后在 `chrome://extensions/` 里加载解压目录即可。
 
 ## 安装
 
