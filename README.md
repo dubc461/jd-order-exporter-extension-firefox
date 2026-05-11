@@ -27,7 +27,7 @@
 
 ## 使用
 
-1. 在 Chrome 打开京东“我的订单”：`https://order.jd.com/center/list.action?d=2&s=4096&page=1`。
+1. 在 Chrome 打开京东“我的订单”：`https://order.jd.com/center/list.action`。
 2. 确认已经登录并能看到订单列表。
 3. 点击 Chrome 工具栏里的 `JD Order Exporter Local`。
 4. 选择日期范围、订单状态和是否补充详情页字段。
