@@ -4,13 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - manifest.json
-      - background.js
-      - content.js
-      - popup.html
-      - popup.js
-      - .github/workflows/release.yml
   workflow_dispatch:
 
 permissions:
