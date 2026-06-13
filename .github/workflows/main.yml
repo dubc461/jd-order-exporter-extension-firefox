@@ -42,7 +42,27 @@ jobs:
             README.md \
             LICENSE
 
+      - name: Reuse existing Firefox XPI
+        id: existing-firefox-xpi
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p web-ext-artifacts
+          EXISTING_XPI="$(gh release view "$GITHUB_REF_NAME" --json assets --jq '.assets[] | select(.name | endswith(".xpi")) | .name' | head -n 1 || true)"
+          if [ -n "$EXISTING_XPI" ]; then
+            gh release download "$GITHUB_REF_NAME" \
+              --pattern "$EXISTING_XPI" \
+              --dir web-ext-artifacts \
+              --clobber
+            mv "web-ext-artifacts/$EXISTING_XPI" "$FIREFOX_XPI"
+            echo "reused=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "reused=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Sign Firefox XPI
+        if: steps.existing-firefox-xpi.outputs.reused != 'true'
         run: |
           npx --yes web-ext sign \
             --source-dir . \
@@ -54,6 +74,7 @@ jobs:
           AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
 
       - name: Rename Firefox XPI
+        if: steps.existing-firefox-xpi.outputs.reused != 'true'
         run: |
           SIGNED_XPI="$(find web-ext-artifacts -maxdepth 1 -type f -name '*.xpi' | head -n 1)"
           test -n "$SIGNED_XPI"
@@ -72,7 +93,15 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          CHROME_ASSET="$(basename "$CHROME_ZIP")"
+          FIREFOX_ASSET="$(basename "$FIREFOX_XPI")"
           if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            for ASSET in $(gh release view "$GITHUB_REF_NAME" --json assets --jq '.assets[].name'); do
+              case "$ASSET" in
+                "$CHROME_ASSET"|"$FIREFOX_ASSET") ;;
+                *.zip|*.xpi) gh release delete-asset "$GITHUB_REF_NAME" "$ASSET" --yes ;;
+              esac
+            done
             gh release upload "$GITHUB_REF_NAME" \
               "$CHROME_ZIP" \
               "$FIREFOX_XPI" \
