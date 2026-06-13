@@ -23,17 +23,23 @@ jobs:
       - name: Lint extension
         run: npx --yes web-ext lint --source-dir .
 
+      - name: Set package names
+        run: |
+          EXTENSION_VERSION="$(node -p "require('./manifest.json').version")"
+          echo "EXTENSION_VERSION=$EXTENSION_VERSION" >> "$GITHUB_ENV"
+          echo "CHROME_ZIP=web-ext-artifacts/chrome-jd-order-exporter-$EXTENSION_VERSION.zip" >> "$GITHUB_ENV"
+          echo "FIREFOX_XPI=web-ext-artifacts/firefox-jd-order-exporter-$EXTENSION_VERSION.xpi" >> "$GITHUB_ENV"
+
       - name: Build Chrome ZIP
         run: |
           mkdir -p web-ext-artifacts
-          zip -r web-ext-artifacts/jd-order-exporter-chrome.zip \
+          zip -r "$CHROME_ZIP" \
             manifest.json \
             background.js \
             content.js \
             popup.html \
             popup.js \
             README.md \
-            PRIVACY.md \
             LICENSE
 
       - name: Sign Firefox XPI
@@ -47,13 +53,19 @@ jobs:
           AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
           AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
 
+      - name: Rename Firefox XPI
+        run: |
+          SIGNED_XPI="$(find web-ext-artifacts -maxdepth 1 -type f -name '*.xpi' | head -n 1)"
+          test -n "$SIGNED_XPI"
+          mv "$SIGNED_XPI" "$FIREFOX_XPI"
+
       - name: Upload workflow artifacts
         uses: actions/upload-artifact@v4
         with:
           name: extension-packages
           path: |
-            web-ext-artifacts/jd-order-exporter-chrome.zip
-            web-ext-artifacts/*.xpi
+            ${{ env.CHROME_ZIP }}
+            ${{ env.FIREFOX_XPI }}
 
       - name: Publish release assets
         if: startsWith(github.ref, 'refs/tags/')
@@ -62,13 +74,13 @@ jobs:
         run: |
           if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
             gh release upload "$GITHUB_REF_NAME" \
-              web-ext-artifacts/jd-order-exporter-chrome.zip \
-              web-ext-artifacts/*.xpi \
+              "$CHROME_ZIP" \
+              "$FIREFOX_XPI" \
               --clobber
           else
             gh release create "$GITHUB_REF_NAME" \
-              web-ext-artifacts/jd-order-exporter-chrome.zip \
-              web-ext-artifacts/*.xpi \
+              "$CHROME_ZIP" \
+              "$FIREFOX_XPI" \
               --title "$GITHUB_REF_NAME" \
               --notes "Chrome ZIP and signed Firefox XPI."
           fi
