@@ -3,6 +3,7 @@
     return;
   }
   window.__jdLocalOrderExporterLoaded = true;
+  const extensionApi = globalThis.browser ?? globalThis.chrome;
 
   const DATE_LABELS = {
     recent3m: "近三个月订单",
@@ -53,7 +54,7 @@
   let isRunning = false;
   let overlay;
 
-  chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  extensionApi.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (!message || message.type === undefined) {
       return false;
     }
@@ -212,7 +213,7 @@
       return text;
     }
 
-    const response = await chrome.runtime.sendMessage({
+    const response = await extensionApi.runtime.sendMessage({
       type: "JD_EXPORT_FETCH",
       url
     });

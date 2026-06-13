@@ -1,6 +1,17 @@
+node_modules/
+dist/
+build/
+web-ext-artifacts/
 jd-orders-*.csv
 jd-orders-*.jsonl
 *.zip
 *.crx
+*.xpi
+
+.env
+.env.*
+!.env.example
+
+*.log
 .DS_Store
 Thumbs.db

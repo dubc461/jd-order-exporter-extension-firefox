@@ -3,8 +3,9 @@ const ALLOWED_HOSTS = new Set([
   "details.jd.com",
   "details.yiyaojd.com"
 ]);
+const extensionApi = globalThis.browser ?? globalThis.chrome;
 
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+extensionApi.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (!message || message.type !== "JD_EXPORT_FETCH") {
     return false;
   }

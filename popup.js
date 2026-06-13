@@ -1,4 +1,5 @@
 const nowYear = new Date().getFullYear();
+const extensionApi = globalThis.browser ?? globalThis.chrome;
 const startYearInput = document.getElementById("startYear");
 const endYearInput = document.getElementById("endYear");
 const dateModeInput = document.getElementById("dateMode");
@@ -29,7 +30,7 @@ function collectOptions() {
 }
 
 async function activeTab() {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const [tab] = await extensionApi.tabs.query({ active: true, currentWindow: true });
   return tab;
 }
 
@@ -42,19 +43,19 @@ async function sendToActiveTab(message) {
     throw new Error("请先打开京东“我的订单”列表页，再点击扩展。");
   }
   try {
-    return await chrome.tabs.sendMessage(tab.id, message);
+    return await extensionApi.tabs.sendMessage(tab.id, message);
   } catch (error) {
     const messageText = error instanceof Error ? error.message : String(error);
-    const noReceiver = /Receiving end does not exist|Could not establish connection/i.test(messageText);
+    const noReceiver = /Receiving end does not exist|Could not establish connection|No matching message handler/i.test(messageText);
     if (!noReceiver) {
       throw error;
     }
 
-    await chrome.scripting.executeScript({
+    await extensionApi.scripting.executeScript({
       target: { tabId: tab.id },
       files: ["content.js"]
     });
-    return chrome.tabs.sendMessage(tab.id, message);
+    return extensionApi.tabs.sendMessage(tab.id, message);
   }
 }
 

@@ -1,6 +1,6 @@
 # Privacy
 
-JD Order Exporter Local runs entirely inside the user's local Chrome browser.
+JD Order Exporter Local runs entirely inside the user's local browser.
 
 ## Data Access
 
@@ -16,7 +16,7 @@ It reads order list pages and optional order detail pages visible to the current
 
 The extension does not upload, sync, or persist order data through any remote service. Exported data is downloaded locally as `CSV` and `JSONL` files.
 
-The extension does not use `chrome.storage`, `localStorage`, IndexedDB, analytics, telemetry, or third-party APIs.
+The extension does not use extension storage, `localStorage`, IndexedDB, analytics, telemetry, or third-party APIs.
 
 ## Sensitive Data
 
@@ -28,4 +28,4 @@ Generated export files match `jd-orders-*` and should not be committed to public
 
 ## Cookies And Session
 
-The extension does not read or export cookies. Network requests use the active Chrome JD session through standard browser credential handling so JD can return pages the user is already allowed to view.
+The extension does not read or export cookies. Network requests use the active browser JD session through standard browser credential handling so JD can return pages the user is already allowed to view.

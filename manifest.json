@@ -2,12 +2,15 @@
   "manifest_version": 3,
   "name": "JD Order Exporter Local",
   "version": "0.1.0",
-  "description": "Export your own JD order history from an already signed-in Chrome session.",
+  "description": "Export your own JD order history from an already signed-in browser session.",
   "action": {
     "default_popup": "popup.html",
     "default_title": "JD Order Exporter"
   },
   "background": {
+    "scripts": [
+      "background.js"
+    ],
     "service_worker": "background.js"
   },
   "permissions": [
@@ -28,5 +31,19 @@
       ],
       "run_at": "document_idle"
     }
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "jd-order-exporter-local@local",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    },
+    "gecko_android": {
+      "strict_min_version": "142.0"
+    }
+  }
 }
