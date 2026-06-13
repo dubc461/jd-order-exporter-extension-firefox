@@ -1,4 +1,4 @@
-  name: Build Firefox XPI
+  name: Build Extensions
 
   on:
     workflow_dispatch:
@@ -7,7 +7,7 @@
         - "v*"
 
   jobs:
-    build-firefox-xpi:
+    build-extensions:
       runs-on: ubuntu-latest
 
       steps:
@@ -20,7 +20,20 @@
         - name: Lint extension
           run: npx --yes web-ext lint --source-dir .
 
-        - name: Sign unlisted Firefox XPI
+        - name: Build Chrome ZIP
+          run: |
+            mkdir -p web-ext-artifacts
+            zip -r web-ext-artifacts/jd-order-exporter-chrome.zip \
+              manifest.json \
+              background.js \
+              content.js \
+              popup.html \
+              popup.js \
+              README.md \
+              PRIVACY.md \
+              LICENSE
+
+        - name: Sign Firefox XPI
           run: |
             npx --yes web-ext sign \
               --source-dir . \
@@ -31,7 +44,13 @@
             AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
             AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
 
-        - name: Upload signed XPI
+        - name: Upload Chrome ZIP
+          uses: actions/upload-artifact@v4
+          with:
+            name: chrome-extension-zip
+            path: web-ext-artifacts/jd-order-exporter-chrome.zip
+
+        - name: Upload Firefox signed XPI
           uses: actions/upload-artifact@v4
           with:
             name: firefox-signed-xpi
