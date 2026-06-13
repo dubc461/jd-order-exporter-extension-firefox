@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "JD Order Exporter Local",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Export your own JD order history from an already signed-in browser session.",
   "action": {
     "default_popup": "popup.html",
