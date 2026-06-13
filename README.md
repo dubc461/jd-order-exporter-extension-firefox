@@ -2,6 +2,8 @@
 
 一个只在本机浏览器中运行的京东个人订单导出扩展，支持 Chrome 与 Firefox。它复用你当前浏览器已登录京东的会话，请求京东订单列表页和订单详情页，并在本机下载 `CSV` 与 `JSONL` 文件。
 
+本项目 fork 自 [bwjoke/jd-order-exporter-extension](https://github.com/bwjoke/jd-order-exporter-extension)，当前仓库保留 Firefox 兼容改动。
+
 ## 特点
 
 - 不读取浏览器 cookie、`localStorage`、密码或其他站点数据。
@@ -10,13 +12,15 @@
 - 默认脱敏收货人、电话、地址；需要完整本地档案时可以手动取消勾选。
 - 详情页链接中的查询参数只用于当次本地抓取，不写入导出文件。
 
-## 下载
+## 获取代码
 
-推荐从 GitHub Releases 下载扩展安装包：
+当前 fork 的 Firefox 兼容改动在本仓库 `main` 分支中。可以直接克隆仓库：
 
-[jd-order-exporter-local-v0.1.0.zip](https://github.com/bwjoke/jd-order-exporter-extension/releases/download/v0.1.0/jd-order-exporter-local-v0.1.0.zip)
+```bash
+git clone https://github.com/dubc461/jd-order-exporter-extension-firefox.git
+```
 
-也可以在仓库页面右侧点击 `Releases`，进入最新版本后下载上面的 zip。这个 zip 只包含扩展运行需要的文件，解压后可以在 Chrome 或 Firefox 中加载。
+也可以在 GitHub 页面点击 `Code` -> `Download ZIP`，解压后加载扩展目录。
 
 ## 安装
 
@@ -28,6 +32,8 @@
 4. 选择刚刚解压出来的扩展目录。
 
 ### Firefox
+
+需要 Firefox 140 或更新版本。临时加载的扩展会在浏览器重启后失效，需要重新加载。
 
 1. 打开 `about:debugging#/runtime/this-firefox`。
 2. 点击“Load Temporary Add-on...”。
